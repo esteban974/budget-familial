@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Familial - Version Cloud</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .periode {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .periode input {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 0 10px;
+            width: 150px;
+            text-align: center;
+        }
+        .periode input::placeholder {
+            color: rgba(255,255,255,0.8);
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .status.success {
+            background: rgba(72, 187, 120, 0.2);
+            border: 1px solid rgba(72, 187, 120, 0.5);
+        }
+        .status.error {
+            background: rgba(229, 62, 62, 0.2);
+            border: 1px solid rgba(229, 62, 62, 0.5);
+        }
+        .status.loading {
+            background: rgba(66, 153, 225, 0.2);
+            border: 1px solid rgba(66, 153, 225, 0.5);
+        }
+        .main-content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .section-header {
+            padding: 20px;
+            color: white;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .revenus { background: linear-gradient(135deg, #48bb78, #38a169); }
+        .charges-fixes { background: linear-gradient(135deg, #ed8936, #dd6b20); }
+        .charges-variables { background: linear-gradient(135deg, #9f7aea, #805ad5); }
+        .bilan { background: linear-gradient(135deg, #4299e1, #3182ce); }
+        .table-container {
+            background: white;
+        }
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .budget-table th,
+        .budget-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .budget-table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .montant-input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: right;
+            transition: border-color 0.3s;
+        }
+        .montant-input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+        .montant-display {
+            text-align: right;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        .pourcentage {
+            text-align: center;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 5px;
+            color: white;
+        }
+        .indicateur {
+            text-align: center;
+            font-size: 24px;
+        }
+        .vert {
+            background: #48bb78;
+        }
+        .orange {
+            background: #ed8936;
+        }
+        .rouge {
+            background: #e53e3e;
+        }
+        .total-row {
+            background: #edf2f7;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .solde-row {
+            background: #e6fffa;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .solde-positif {
+            color: #38a169;
+        }
+        .solde-negatif {
+            color: #e53e3e;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+        }
+        .alertes {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            border-radius: 5px;
+            display: none;
+        }
+        .alertes.show {
+            display: block;
+        }
+        .alerte-item {
+            margin: 10px 0;
+            color: #c53030;
+            font-weight: bold;
+        }
+        .legende {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .legende-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: #f7fafc;
+            border-radius: 20px;
+        }
+        .pastille {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+            .budget-table {
+                font-size: 14px;
+            }
+            .budget-table th,
+            .budget-table td {
+                padding: 10px 5px;
+            }
+            .legende {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 BUDGET FAMILIAL - VERSION CLOUD</h1>
+            <div class="periode">
+                <input type="text" id="mois" placeholder="Janvier" maxlength="15">
+                <input type="number" id="annee" placeholder="2025" min="2024" max="2030">
+                <button class="btn" onclick="sauvegarderCloud()" id="btn-sauv">💾 Sauvegarder</button>
+                <button class="btn" onclick="chargerCloud()" id="btn-load">📥 Charger</button>
+                <button class="btn btn-danger" onclick="reset()">🔄 Reset</button>
+                <div class="status" id="status" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="legende">
+                <div class="legende-item">
+                    <div class="pastille vert"></div>
+                    <span>✅ Budget respecté (&lt;100%)</span>
+                </div>
+                <div class="legende-item">
+                    <div class="pastille orange"></div>
+                    <span>⚠️ Attention (100-110%)</span>
+                </div>
+                <div class="legende-item">
+                    <div class="pastille rouge"></div>
+                    <span>❌ Dépassement (&gt;110%)</span>
+                </div>
+            </div>
+
+            <!-- REVENUS -->
+            <div class="section">
+                <div class="section-header revenus">💵 REVENUS</div>
+                <div class="table-container">
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Catégorie</th>
+                                <th style="width: 15%;">Budget</th>
+                                <th style="width: 15%;">Réalisé</th>
+                                <th style="width: 15%;">Écart</th>
+                                <th style="width: 10%;">%</th>
+                                <th style="width: 5%;">📊</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Salaire Marie</td>
+                                <td class="montant-display">2 500€</td>
+                                <td><input type="number" class="montant-input" data-budget="2500" data-category="revenus" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Salaire Etienne</td>
+                                <td class="montant-display">1 500€</td>
+                                <td><input type="number" class="montant-input" data-budget="1500" data-category="revenus" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>CAF</td>
+                                <td class="montant-display">550€</td>
+                                <td><input type="number" class="montant-input" data-budget="550" data-category="revenus" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>TOTAL REVENUS</strong></td>
+                                <td class="montant-display"><strong>4 550€</strong></td>
+                                <td class="montant-display" id="total-revenus-realise"><strong>0€</strong></td>
+                                <td class="montant-display" id="total-revenus-ecart"><strong>0€</strong></td>
+                                <td class="pourcentage" id="total-revenus-pct"><strong>0%</strong></td>
+                                <td class="indicateur" id="total-revenus-indicateur">⚪</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CHARGES FIXES -->
+            <div class="section">
+                <div class="section-header charges-fixes">🏠 CHARGES FIXES</div>
+                <div class="table-container">
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Catégorie</th>
+                                <th style="width: 15%;">Budget</th>
+                                <th style="width: 15%;">Réalisé</th>
+                                <th style="width: 15%;">Écart</th>
+                                <th style="width: 10%;">%</th>
+                                <th style="width: 5%;">📊</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Maison (prêt + copro + assurances)</td>
+                                <td class="montant-display">1 111€</td>
+                                <td><input type="number" class="montant-input" data-budget="1111" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Banque/Assurances/Impôts</td>
+                                <td class="montant-display">161€</td>
+                                <td><input type="number" class="montant-input" data-budget="161" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Énergie (électricité + gaz)</td>
+                                <td class="montant-display">150€</td>
+                                <td><input type="number" class="montant-input" data-budget="150" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Téléphonie/Internet</td>
+                                <td class="montant-display">100€</td>
+                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Transports</td>
+                                <td class="montant-display">300€</td>
+                                <td><input type="number" class="montant-input" data-budget="300" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Sports/Activités</td>
+                                <td class="montant-display">280€</td>
+                                <td><input type="number" class="montant-input" data-budget="280" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Santé non remboursée</td>
+                                <td class="montant-display">155€</td>
+                                <td><input type="number" class="montant-input" data-budget="155" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>TOTAL CHARGES FIXES</strong></td>
+                                <td class="montant-display"><strong>2 257€</strong></td>
+                                <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
+                                <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
+                                <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
+                                <td class="indicateur" id="total-fixes-indicateur">⚪</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CHARGES VARIABLES -->
+            <div class="section">
+                <div class="section-header charges-variables">🛒 CHARGES VARIABLES</div>
+                <div class="table-container">
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Catégorie</th>
+                                <th style="width: 15%;">Budget</th>
+                                <th style="width: 15%;">Réalisé</th>
+                                <th style="width: 15%;">Écart</th>
+                                <th style="width: 10%;">%</th>
+                                <th style="width: 5%;">📊</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🛒 Courses alimentaires</td>
+                                <td class="montant-display">600€</td>
+                                <td><input type="number" class="montant-input" data-budget="600" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>🥐 Petits déj/goûters</td>
+                                <td class="montant-display">100€</td>
+                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>🍕 Resto/Take away</td>
+                                <td class="montant-display">100€</td>
+                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>🛍️ Consommation/Plaisir</td>
+                                <td class="montant-display">400€</td>
+                                <td><input type="number" class="montant-input" data-budget="400" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>🏖️ Provision vacances</td>
+                                <td class="montant-display">350€</td>
+                                <td><input type="number" class="montant-input" data-budget="350" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>⚠️ Marge sécurité/imprévus</td>
+                                <td class="montant-display">143€</td>
+                                <td><input type="number" class="montant-input" data-budget="143" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>TOTAL CHARGES VARIABLES</strong></td>
+                                <td class="montant-display"><strong>1 693€</strong></td>
+                                <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
+                                <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
+                                <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
+                                <td class="indicateur" id="total-variables-indicateur">⚪</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BILAN -->
+            <div class="section">
+                <div class="section-header bilan">📊 BILAN MENSUEL</div>
+                <div class="table-container">
+                    <table class="budget-table">
+                        <tbody>
+                            <tr class="total-row">
+                                <td style="width: 40%;"><strong>TOTAL DÉPENSES</strong></td>
+                                <td class="montant-display" style="width: 15%;"><strong>3 950€</strong></td>
+                                <td class="montant-display" id="total-depenses-realise" style="width: 15%;"><strong>0€</strong></td>
+                                <td class="montant-display" id="total-depenses-ecart" style="width: 15%;"><strong>0€</strong></td>
+                                <td class="pourcentage" id="total-depenses-pct" style="width: 10%;"><strong>0%</strong></td>
+                                <td class="indicateur" id="total-depenses-indicateur" style="width: 5%;">⚪</td>
+                            </tr>
+                            <tr class="solde-row">
+                                <td><strong>💰 SOLDE MENSUEL</strong></td>
+                                <td class="montant-display"><strong>+600€</strong></td>
+                                <td class="montant-display" id="solde-realise"><strong>0€</strong></td>
+                                <td class="montant-display" id="solde-ecart"><strong>0€</strong></td>
+                                <td class="pourcentage" id="solde-pct"><strong>0%</strong></td>
+                                <td class="indicateur" id="solde-indicateur" style="font-size: 30px;">⚪</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="alertes" id="alertes">
+                <h3 style="color: #c53030; margin-bottom: 15px;">🚨 ALERTES BUDGÉTAIRES</h3>
+                <div id="alertes-contenu"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL de votre API Google Apps Script
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyoYyxL1Sh0bV-BEemcFVn4o7OJMT3JHaM7btVFZUBH_r0C3EoCo7BDi4dWIqbW1Sv1/exec';
+
+        // Afficher un message de statut
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Sauvegarder dans Google Sheets
+        async function sauvegarderCloud() {
+            const mois = document.getElementById('mois').value.trim();
+            const annee = document.getElementById('annee').value.trim();
+            
+            if (!mois || !annee) {
+                showStatus('Veuillez renseigner le mois et l\'année', 'error');
+                return;
+            }
+            
+            // Collecter toutes les données
+            const donnees = [];
+            document.querySelectorAll('.montant-input').forEach(input => {
+                donnees.push(parseFloat(input.value) || 0);
+            });
+            
+            // Désactiver le bouton pendant la sauvegarde
+            const btnSauv = document.getElementById('btn-sauv');
+            btnSauv.disabled = true;
+            showStatus('Sauvegarde en cours...', 'loading');
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'sauvegarder',
+                        mois: mois,
+                        annee: parseInt(annee),
+                        donnees: donnees
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus(`💾 ${result.message}`, 'success');
+                } else {
+                    showStatus(`❌ Erreur: ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                showStatus(`❌ Erreur de connexion: ${error.message}`, 'error');
+            }
+            
+            btnSauv.disabled = false;
+        }
+
+        // Charger depuis Google Sheets
+        async function chargerCloud() {
+            const mois = document.getElementById('mois').value.trim();
+            const annee = document.getElementById('annee').value.trim();
+            
+            if (!mois || !annee) {
+                showStatus('Veuillez renseigner le mois et l\'année', 'error');
+                return;
+            }
+            
+            const btnLoad = document.getElementById('btn-load');
+            btnLoad.disabled = true;
+            showStatus('Chargement en cours...', 'loading');
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'charger',
+                        mois: mois,
+                        annee: parseInt(annee)
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Mapper les données aux champs
+                    const categories = [
+                        "Salaire Marie", "Salaire Etienne", "CAF",
+                        "Maison", "Banque/Assurances/Impôts", "Énergie", 
+                        "Téléphonie/Internet", "Transports", "Sports/Activités", "Santé",
+                        "Courses alimentaires", "Petits déj/goûters", "Resto/Take away", 
+                        "Consommation/Plaisir", "Provision vacances", "Marge sécurité"
+                    ];
+                    
+                    document.querySelectorAll('.montant-input').forEach((input, index) => {
+                        const categorie = categories[index];
+                        input.value = result.data[categorie] || '';
+                    });
+                    
+                    calculer();
+                    showStatus(`📥 Données chargées (${result.count || 0} éléments)`, 'success');
+                } else {
+                    showStatus(`❌ Erreur: ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                showStatus(`❌ Erreur de connexion: ${error.message}`, 'error');
+            }
+            
+            btnLoad.disabled = false;
+        }
+
+        // Reset complet
+        function reset() {
+            if (confirm('🔄 Êtes-vous sûr de vouloir effacer toutes les données saisies ?')) {
+                document.querySelectorAll('.montant-input').forEach(input => {
+                    input.value = '';
+                });
+                calculer();
+                showStatus('✅ Données effacées !', 'success');
+            }
+        }
+
+        // Calculer tous les totaux et pourcentages (même logique que la version localStorage)
+        function calculer() {
+            let totalRevenusRealise = 0;
+            let totalFixesRealise = 0;
+            let totalVariablesRealise = 0;
+            let alertes = [];
+
+            document.querySelectorAll('.montant-input').forEach(input => {
+                const budget = parseFloat(input.dataset.budget) || 0;
+                const realise = parseFloat(input.value) || 0;
+                const category = input.dataset.category;
+                const critical = input.dataset.critical === 'true';
+                
+                const ecart = realise - budget;
+                const pourcentage = budget > 0 ? (realise / budget) * 100 : 0;
+                
+                const row = input.closest('tr');
+                row.querySelector('.ecart').textContent = ecart >= 0 ? `+${ecart}€` : `${ecart}€`;
+                
+                const pctCell = row.querySelector('.pourcentage');
+                const indicateur = row.querySelector('.indicateur');
+                
+                pctCell.textContent = `${Math.round(pourcentage)}%`;
+                
+                // Logique différente pour revenus vs dépenses
+                if (category === 'revenus') {
+                    if (pourcentage === 0) {
+                        pctCell.className = 'pourcentage';
+                        indicateur.textContent = '⚪';
+                    } else if (pourcentage < 90) {
+                        pctCell.className = 'pourcentage rouge';
+                        indicateur.textContent = '❌';
+                    } else if (pourcentage < 100) {
+                        pctCell.className = 'pourcentage orange';
+                        indicateur.textContent = '⚠️';
+                    } else {
+                        pctCell.className = 'pourcentage vert';
+                        indicateur.textContent = '✅';
+                    }
+                } else {
+                    if (pourcentage === 0) {
+                        pctCell.className = 'pourcentage';
+                        indicateur.textContent = '⚪';
+                    } else if (pourcentage < 100) {
+                        pctCell.className = 'pourcentage vert';
+                        indicateur.textContent = '✅';
+                    } else if (pourcentage <= 110) {
+                        pctCell.className = 'pourcentage orange';
+                        indicateur.textContent = '⚠️';
+                    } else {
+                        pctCell.className = 'pourcentage rouge';
+                        indicateur.textContent = '❌';
+                    }
+                }
+
+                // Alertes pour les postes critiques
+                if (critical && category === 'charges' && pourcentage > 75) {
+                    const categorieName = row.querySelector('td').textContent;
+                    if (pourcentage > 110) {
+                        alertes.push(`🚨 DÉPASSEMENT CRITIQUE: ${categorieName} (${Math.round(pourcentage)}%)`);
+                    } else if (pourcentage > 100) {
+                        alertes.push(`⚠️ BUDGET DÉPASSÉ: ${categorieName} (${Math.round(pourcentage)}%)`);
+                    } else if (pourcentage > 75) {
+                        alertes.push(`⚡ ATTENTION: ${categorieName} à ${Math.round(pourcentage)}% - Ralentir !`);
+                    }
+                }
+
+                // Alertes pour les revenus manquants
+                if (category === 'revenus' && pourcentage < 90 && pourcentage > 0) {
+                    const categorieName = row.querySelector('td').textContent;
+                    alertes.push(`⚠️ REVENUS INCOMPLETS: ${categorieName} seulement à ${Math.round(pourcentage)}%`);
+                }
+
+                // Cumuls par catégorie
+                if (category === 'revenus') {
+                    totalRevenusRealise += realise;
+                } else if (category === 'charges') {
+                    const tableSection = input.closest('.section');
+                    if (tableSection.querySelector('.charges-fixes')) {
+                        totalFixesRealise += realise;
+                    } else {
+                        totalVariablesRealise += realise;
+                    }
+                }
+            });
+
+            // Mise à jour des totaux
+            updateTotal('total-revenus', 4550, totalRevenusRealise, 'revenus');
+            updateTotal('total-fixes', 2257, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 1693, totalVariablesRealise, 'charges');
+            
+            const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
+            updateTotal('total-depenses', 3950, totalDepensesRealise, 'charges');
+            
+            // Solde
+            const soldeRealise = totalRevenusRealise - totalDepensesRealise;
+            const soldeEcart = soldeRealise - 600;
+            const soldePct = totalRevenusRealise > 0 ? (soldeRealise / totalRevenusRealise) * 100 : 0;
+            
+            document.getElementById('solde-realise').innerHTML = `<strong>${soldeRealise >= 0 ? '+' : ''}${soldeRealise}€</strong>`;
+            document.getElementById('solde-ecart').innerHTML = `<strong>${soldeEcart >= 0 ? '+' : ''}${soldeEcart}€</strong>`;
+            document.getElementById('solde-pct').innerHTML = `<strong>${Math.round(soldePct)}%</strong>`;
+            
+            const soldeIndicateur = document.getElementById('solde-indicateur');
+            const soldeRow = soldeIndicateur.closest('tr');
+            
+            if (soldeRealise > 0) {
+                soldeIndicateur.textContent = '🎉';
+                soldeRow.className = 'solde-row solde-positif';
+            } else if (soldeRealise === 0) {
+                soldeIndicateur.textContent = '⚖️';
+                soldeRow.className = 'solde-row';
+            } else {
+                soldeIndicateur.textContent = '💸';
+                soldeRow.className = 'solde-row solde-negatif';
+                alertes.unshift(`🚨 SOLDE NÉGATIF: ${soldeRealise}€ - DÉSÉPARGNE EN COURS !`);
+            }
+
+            // Affichage des alertes
+            const alertesDiv = document.getElementById('alertes');
+            const alertesContenu = document.getElementById('alertes-contenu');
+            
+            if (alertes.length > 0) {
+                alertesContenu.innerHTML = alertes.map(alerte => `<div class="alerte-item">${alerte}</div>`).join('');
+                alertesDiv.classList.add('show');
+            } else {
+                alertesDiv.classList.remove('show');
+            }
+        }
+
+        function updateTotal(prefix, budget, realise, category = 'charges') {
+            const ecart = realise - budget;
+            const pourcentage = budget > 0 ? (realise / budget) * 100 : 0;
+            
+            document.getElementById(`${prefix}-realise`).innerHTML = `<strong>${realise}€</strong>`;
+            document.getElementById(`${prefix}-ecart`).innerHTML = `<strong>${ecart >= 0 ? '+' : ''}${ecart}€</strong>`;
+            
+            const pctElement = document.getElementById(`${prefix}-pct`);
+            const indicateurElement = document.getElementById(`${prefix}-indicateur`);
+            
+            pctElement.innerHTML = `<strong>${Math.round(pourcentage)}%</strong>`;
+            
+            if (category === 'revenus') {
+                if (pourcentage === 0) {
+                    pctElement.className = 'pourcentage';
+                    indicateurElement.textContent = '⚪';
+                } else if (pourcentage < 90) {
+                    pctElement.className = 'pourcentage rouge';
+                    indicateurElement.textContent = '❌';
+                } else if (pourcentage < 100) {
+                    pctElement.className = 'pourcentage orange';
+                    indicateurElement.textContent = '⚠️';
+                } else {
+                    pctElement.className = 'pourcentage vert';
+                    indicateurElement.textContent = '✅';
+                }
+            } else {
+                if (pourcentage === 0) {
+                    pctElement.className = 'pourcentage';
+                    indicateurElement.textContent = '⚪';
+                } else if (pourcentage < 100) {
+                    pctElement.className = 'pourcentage vert';
+                    indicateurElement.textContent = '✅';
+                } else if (pourcentage <= 110) {
+                    pctElement.className = 'pourcentage orange';
+                    indicateurElement.textContent = '⚠️';
+                } else {
+                    pctElement.className = 'pourcentage rouge';
+                    indicateurElement.textContent = '❌';
+                }
+            }
+        }
+
+        // Calcul initial au chargement
+        window.addEventListener('load', calculer);
+        calculer();
+    </script>
+</body>
+</html>

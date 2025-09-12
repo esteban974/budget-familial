@@ -40,6 +40,7 @@
             border-radius: 10px;
             margin-top: 20px;
         }
+        .periode select,
         .periode input {
             background: transparent;
             border: 2px solid white;
@@ -50,6 +51,10 @@
             margin: 0 10px;
             width: 150px;
             text-align: center;
+        }
+        .periode select option {
+            background: #4facfe;
+            color: white;
         }
         .periode input::placeholder {
             color: rgba(255,255,255,0.8);
@@ -247,7 +252,21 @@
         <div class="header">
             <h1>💰 BUDGET FAMILIAL - VERSION CLOUD</h1>
             <div class="periode">
-                <input type="text" id="mois" placeholder="Janvier" maxlength="15">
+                <select id="mois">
+                    <option value="">Sélectionner un mois</option>
+                    <option value="Janvier">Janvier</option>
+                    <option value="Février">Février</option>
+                    <option value="Mars">Mars</option>
+                    <option value="Avril">Avril</option>
+                    <option value="Mai">Mai</option>
+                    <option value="Juin">Juin</option>
+                    <option value="Juillet">Juillet</option>
+                    <option value="Août">Août</option>
+                    <option value="Septembre">Septembre</option>
+                    <option value="Octobre">Octobre</option>
+                    <option value="Novembre">Novembre</option>
+                    <option value="Décembre">Décembre</option>
+                </select>
                 <input type="number" id="annee" placeholder="2025" min="2024" max="2030">
                 <button class="btn" onclick="sauvegarderCloud()" id="btn-sauv">💾 Sauvegarder</button>
                 <button class="btn" onclick="chargerCloud()" id="btn-load">📥 Charger</button>
@@ -642,228 +661,4 @@
                             calculer();
                             showStatus(`📥 Données chargées (${result.count || 0} éléments)`, 'success');
                         } else {
-                            showStatus('📥 Aucune donnée trouvée pour ce mois', 'error');
-                        }
-                    } catch (e) {
-                        showStatus('❌ Erreur lors du traitement des données', 'error');
-                    }
-                    
-                    // Nettoyer
-                    document.body.removeChild(script);
-                    delete window[callbackName];
-                };
-                
-                // Construire l'URL JSONP
-                const params = new URLSearchParams({
-                    action: 'charger',
-                    mois: mois,
-                    annee: parseInt(annee),
-                    callback: callbackName
-                });
-                
-                script.src = `${API_URL}?${params.toString()}`;
-                script.onerror = function() {
-                    showStatus('❌ Erreur de chargement', 'error');
-                    document.body.removeChild(script);
-                    delete window[callbackName];
-                };
-                
-                document.body.appendChild(script);
-                
-            } catch (error) {
-                showStatus(`❌ Erreur: ${error.message}`, 'error');
-            }
-            
-            btnLoad.disabled = false;
-        }
-
-        // Reset complet
-        function reset() {
-            if (confirm('🔄 Êtes-vous sûr de vouloir effacer toutes les données saisies ?')) {
-                document.querySelectorAll('.montant-input').forEach(input => {
-                    input.value = '';
-                });
-                calculer();
-                showStatus('✅ Données effacées !', 'success');
-            }
-        }
-
-        // Calculer tous les totaux et pourcentages (même logique que la version localStorage)
-        function calculer() {
-            let totalRevenusRealise = 0;
-            let totalFixesRealise = 0;
-            let totalVariablesRealise = 0;
-            let alertes = [];
-
-            document.querySelectorAll('.montant-input').forEach(input => {
-                const budget = parseFloat(input.dataset.budget) || 0;
-                const realise = parseFloat(input.value) || 0;
-                const category = input.dataset.category;
-                const critical = input.dataset.critical === 'true';
-                
-                const ecart = realise - budget;
-                const pourcentage = budget > 0 ? (realise / budget) * 100 : 0;
-                
-                const row = input.closest('tr');
-                row.querySelector('.ecart').textContent = ecart >= 0 ? `+${ecart}€` : `${ecart}€`;
-                
-                const pctCell = row.querySelector('.pourcentage');
-                const indicateur = row.querySelector('.indicateur');
-                
-                pctCell.textContent = `${Math.round(pourcentage)}%`;
-                
-                // Logique différente pour revenus vs dépenses
-                if (category === 'revenus') {
-                    if (pourcentage === 0) {
-                        pctCell.className = 'pourcentage';
-                        indicateur.textContent = '⚪';
-                    } else if (pourcentage < 90) {
-                        pctCell.className = 'pourcentage rouge';
-                        indicateur.textContent = '❌';
-                    } else if (pourcentage < 100) {
-                        pctCell.className = 'pourcentage orange';
-                        indicateur.textContent = '⚠️';
-                    } else {
-                        pctCell.className = 'pourcentage vert';
-                        indicateur.textContent = '✅';
-                    }
-                } else {
-                    if (pourcentage === 0) {
-                        pctCell.className = 'pourcentage';
-                        indicateur.textContent = '⚪';
-                    } else if (pourcentage < 100) {
-                        pctCell.className = 'pourcentage vert';
-                        indicateur.textContent = '✅';
-                    } else if (pourcentage <= 110) {
-                        pctCell.className = 'pourcentage orange';
-                        indicateur.textContent = '⚠️';
-                    } else {
-                        pctCell.className = 'pourcentage rouge';
-                        indicateur.textContent = '❌';
-                    }
-                }
-
-                // Alertes pour les postes critiques
-                if (critical && category === 'charges' && pourcentage > 75) {
-                    const categorieName = row.querySelector('td').textContent;
-                    if (pourcentage > 110) {
-                        alertes.push(`🚨 DÉPASSEMENT CRITIQUE: ${categorieName} (${Math.round(pourcentage)}%)`);
-                    } else if (pourcentage > 100) {
-                        alertes.push(`⚠️ BUDGET DÉPASSÉ: ${categorieName} (${Math.round(pourcentage)}%)`);
-                    } else if (pourcentage > 75) {
-                        alertes.push(`⚡ ATTENTION: ${categorieName} à ${Math.round(pourcentage)}% - Ralentir !`);
-                    }
-                }
-
-                // Alertes pour les revenus manquants
-                if (category === 'revenus' && pourcentage < 90 && pourcentage > 0) {
-                    const categorieName = row.querySelector('td').textContent;
-                    alertes.push(`⚠️ REVENUS INCOMPLETS: ${categorieName} seulement à ${Math.round(pourcentage)}%`);
-                }
-
-                // Cumuls par catégorie
-                if (category === 'revenus') {
-                    totalRevenusRealise += realise;
-                } else if (category === 'charges') {
-                    const tableSection = input.closest('.section');
-                    if (tableSection.querySelector('.charges-fixes')) {
-                        totalFixesRealise += realise;
-                    } else {
-                        totalVariablesRealise += realise;
-                    }
-                }
-            });
-
-            // Mise à jour des totaux
-            updateTotal('total-revenus', 4550, totalRevenusRealise, 'revenus');
-            updateTotal('total-fixes', 2257, totalFixesRealise, 'charges');
-            updateTotal('total-variables', 1693, totalVariablesRealise, 'charges');
-            
-            const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
-            updateTotal('total-depenses', 3950, totalDepensesRealise, 'charges');
-            
-            // Solde
-            const soldeRealise = totalRevenusRealise - totalDepensesRealise;
-            const soldeEcart = soldeRealise - 600;
-            const soldePct = totalRevenusRealise > 0 ? (soldeRealise / totalRevenusRealise) * 100 : 0;
-            
-            document.getElementById('solde-realise').innerHTML = `<strong>${soldeRealise >= 0 ? '+' : ''}${soldeRealise}€</strong>`;
-            document.getElementById('solde-ecart').innerHTML = `<strong>${soldeEcart >= 0 ? '+' : ''}${soldeEcart}€</strong>`;
-            document.getElementById('solde-pct').innerHTML = `<strong>${Math.round(soldePct)}%</strong>`;
-            
-            const soldeIndicateur = document.getElementById('solde-indicateur');
-            const soldeRow = soldeIndicateur.closest('tr');
-            
-            if (soldeRealise > 0) {
-                soldeIndicateur.textContent = '🎉';
-                soldeRow.className = 'solde-row solde-positif';
-            } else if (soldeRealise === 0) {
-                soldeIndicateur.textContent = '⚖️';
-                soldeRow.className = 'solde-row';
-            } else {
-                soldeIndicateur.textContent = '💸';
-                soldeRow.className = 'solde-row solde-negatif';
-                alertes.unshift(`🚨 SOLDE NÉGATIF: ${soldeRealise}€ - DÉSÉPARGNE EN COURS !`);
-            }
-
-            // Affichage des alertes
-            const alertesDiv = document.getElementById('alertes');
-            const alertesContenu = document.getElementById('alertes-contenu');
-            
-            if (alertes.length > 0) {
-                alertesContenu.innerHTML = alertes.map(alerte => `<div class="alerte-item">${alerte}</div>`).join('');
-                alertesDiv.classList.add('show');
-            } else {
-                alertesDiv.classList.remove('show');
-            }
-        }
-
-        function updateTotal(prefix, budget, realise, category = 'charges') {
-            const ecart = realise - budget;
-            const pourcentage = budget > 0 ? (realise / budget) * 100 : 0;
-            
-            document.getElementById(`${prefix}-realise`).innerHTML = `<strong>${realise}€</strong>`;
-            document.getElementById(`${prefix}-ecart`).innerHTML = `<strong>${ecart >= 0 ? '+' : ''}${ecart}€</strong>`;
-            
-            const pctElement = document.getElementById(`${prefix}-pct`);
-            const indicateurElement = document.getElementById(`${prefix}-indicateur`);
-            
-            pctElement.innerHTML = `<strong>${Math.round(pourcentage)}%</strong>`;
-            
-            if (category === 'revenus') {
-                if (pourcentage === 0) {
-                    pctElement.className = 'pourcentage';
-                    indicateurElement.textContent = '⚪';
-                } else if (pourcentage < 90) {
-                    pctElement.className = 'pourcentage rouge';
-                    indicateurElement.textContent = '❌';
-                } else if (pourcentage < 100) {
-                    pctElement.className = 'pourcentage orange';
-                    indicateurElement.textContent = '⚠️';
-                } else {
-                    pctElement.className = 'pourcentage vert';
-                    indicateurElement.textContent = '✅';
-                }
-            } else {
-                if (pourcentage === 0) {
-                    pctElement.className = 'pourcentage';
-                    indicateurElement.textContent = '⚪';
-                } else if (pourcentage < 100) {
-                    pctElement.className = 'pourcentage vert';
-                    indicateurElement.textContent = '✅';
-                } else if (pourcentage <= 110) {
-                    pctElement.className = 'pourcentage orange';
-                    indicateurElement.textContent = '⚠️';
-                } else {
-                    pctElement.className = 'pourcentage rouge';
-                    indicateurElement.textContent = '❌';
-                }
-            }
-        }
-
-        // Calcul initial au chargement
-        window.addEventListener('load', calculer);
-        calculer();
-    </script>
-</body>
-</html>
+                            showStatus('📥 Auc

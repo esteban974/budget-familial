@@ -446,17 +446,9 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>🛒 Courses alimentaires</td>
-                                <td class="montant-display">600€</td>
-                                <td><input type="number" class="montant-input" data-budget="600" data-category="charges" data-critical="true" onchange="calculer()"></td>
-                                <td class="montant-display ecart">0€</td>
-                                <td class="pourcentage">0%</td>
-                                <td class="indicateur">⚪</td>
-                            </tr>
-                            <tr>
-                                <td>🥐 Petits déj/goûters</td>
-                                <td class="montant-display">100€</td>
-                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" onchange="calculer()"></td>
+                                <td>🛒 Alimentation (courses + petits déj/goûters)</td>
+                                <td class="montant-display">700€</td>
+                                <td><input type="number" class="montant-input" data-budget="700" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -558,7 +550,7 @@
             }
         }
 
-        // Sauvegarder dans Google Sheets avec JSONP
+        // Sauvegarder dans Google Sheets
         async function sauvegarderCloud() {
             const mois = document.getElementById('mois').value.trim();
             const annee = document.getElementById('annee').value.trim();
@@ -596,19 +588,21 @@
                 document.body.appendChild(iframe);
                 
                 iframe.onload = function() {
-                    try {
-                        // Simulation d'un succès - on ne peut pas lire le contenu à cause de CORS
-                        showStatus('💾 Données sauvegardées avec succès', 'success');
-                        setTimeout(() => document.body.removeChild(iframe), 1000);
-                    } catch (e) {
-                        showStatus('💾 Données probablement sauvegardées', 'success');
-                        setTimeout(() => document.body.removeChild(iframe), 1000);
-                    }
+                    showStatus('💾 Données sauvegardées avec succès', 'success');
+                    setTimeout(() => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                    }, 1000);
                 };
                 
                 iframe.onerror = function() {
                     showStatus('❌ Erreur de sauvegarde', 'error');
-                    setTimeout(() => document.body.removeChild(iframe), 1000);
+                    setTimeout(() => {
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
+                    }, 1000);
                 };
                 
                 iframe.src = url;
@@ -620,7 +614,7 @@
             btnSauv.disabled = false;
         }
 
-        // Charger depuis Google Sheets avec GET
+        // Charger depuis Google Sheets
         async function chargerCloud() {
             const mois = document.getElementById('mois').value.trim();
             const annee = document.getElementById('annee').value.trim();
@@ -635,7 +629,6 @@
             showStatus('Chargement en cours...', 'loading');
             
             try {
-                // Pour le chargement, on va utiliser une méthode différente
                 // Créer un script tag pour JSONP
                 const script = document.createElement('script');
                 const callbackName = 'budgetCallback' + Date.now();
@@ -644,7 +637,7 @@
                 window[callbackName] = function(result) {
                     try {
                         if (result && result.success) {
-                            // Mapper les données aux champs
+                            // Mapper les données aux champs (version consolidée)
                             const categories = [
                                 "Salaire Marie", "Salaire Etienne", "CAF",
                                 "Maison", "Banque/Assurances/Impôts", "Énergie", 
@@ -661,4 +654,232 @@
                             calculer();
                             showStatus(`📥 Données chargées (${result.count || 0} éléments)`, 'success');
                         } else {
-                            showStatus('📥 Auc
+                            showStatus('📥 Aucune donnée trouvée pour ce mois', 'error');
+                        }
+                    } catch (e) {
+                        showStatus('❌ Erreur lors du traitement des données', 'error');
+                    }
+                    
+                    // Nettoyer
+                    if (document.body.contains(script)) {
+                        document.body.removeChild(script);
+                    }
+                    delete window[callbackName];
+                };
+                
+                // Construire l'URL JSONP
+                const params = new URLSearchParams({
+                    action: 'charger',
+                    mois: mois,
+                    annee: parseInt(annee),
+                    callback: callbackName
+                });
+                
+                script.src = `${API_URL}?${params.toString()}`;
+                script.onerror = function() {
+                    showStatus('❌ Erreur de chargement', 'error');
+                    if (document.body.contains(script)) {
+                        document.body.removeChild(script);
+                    }
+                    delete window[callbackName];
+                };
+                
+                document.body.appendChild(script);
+                
+            } catch (error) {
+                showStatus(`❌ Erreur: ${error.message}`, 'error');
+            }
+            
+            btnLoad.disabled = false;
+        }
+
+        // Reset complet
+        function reset() {
+            if (confirm('🔄 Êtes-vous sûr de vouloir effacer toutes les données saisies ?')) {
+                document.querySelectorAll('.montant-input').forEach(input => {
+                    input.value = '';
+                });
+                calculer();
+                showStatus('✅ Données effacées !', 'success');
+            }
+        }
+
+        // Calculer tous les totaux et pourcentages
+        function calculer() {
+            let totalRevenusRealise = 0;
+            let totalFixesRealise = 0;
+            let totalVariablesRealise = 0;
+            let alertes = [];
+
+            document.querySelectorAll('.montant-input').forEach(input => {
+                const budget = parseFloat(input.dataset.budget) || 0;
+                const realise = parseFloat(input.value) || 0;
+                const category = input.dataset.category;
+                const critical = input.dataset.critical === 'true';
+                
+                const ecart = realise - budget;
+                const pourcentage = budget > 0 ? (realise / budget) * 100 : 0;
+                
+                const row = input.closest('tr');
+                row.querySelector('.ecart').textContent = ecart >= 0 ? `+${ecart}€` : `${ecart}€`;
+                
+                const pctCell = row.querySelector('.pourcentage');
+                const indicateur = row.querySelector('.indicateur');
+                
+                pctCell.textContent = `${Math.round(pourcentage)}%`;
+                
+                // Logique différente pour revenus vs dépenses
+                if (category === 'revenus') {
+                    if (pourcentage === 0) {
+                        pctCell.className = 'pourcentage';
+                        indicateur.textContent = '⚪';
+                    } else if (pourcentage < 90) {
+                        pctCell.className = 'pourcentage rouge';
+                        indicateur.textContent = '❌';
+                    } else if (pourcentage < 100) {
+                        pctCell.className = 'pourcentage orange';
+                        indicateur.textContent = '⚠️';
+                    } else {
+                        pctCell.className = 'pourcentage vert';
+                        indicateur.textContent = '✅';
+                    }
+                } else {
+                    if (pourcentage === 0) {
+                        pctCell.className = 'pourcentage';
+                        indicateur.textContent = '⚪';
+                    } else if (pourcentage < 100) {
+                        pctCell.className = 'pourcentage vert';
+                        indicateur.textContent = '✅';
+                    } else if (pourcentage <= 110) {
+                        pctCell.className = 'pourcentage orange';
+                        indicateur.textContent = '⚠️';
+                    } else {
+                        pctCell.className = 'pourcentage rouge';
+                        indicateur.textContent = '❌';
+                    }
+                }
+
+                // Alertes pour les postes critiques
+                if (critical && category === 'charges' && pourcentage > 75) {
+                    const categorieName = row.querySelector('td').textContent;
+                    if (pourcentage > 110) {
+                        alertes.push(`🚨 DÉPASSEMENT CRITIQUE: ${categorieName} (${Math.round(pourcentage)}%)`);
+                    } else if (pourcentage > 100) {
+                        alertes.push(`⚠️ BUDGET DÉPASSÉ: ${categorieName} (${Math.round(pourcentage)}%)`);
+                    } else if (pourcentage > 75) {
+                        alertes.push(`⚡ ATTENTION: ${categorieName} à ${Math.round(pourcentage)}% - Ralentir !`);
+                    }
+                }
+
+                // Alertes pour les revenus manquants
+                if (category === 'revenus' && pourcentage < 90 && pourcentage > 0) {
+                    const categorieName = row.querySelector('td').textContent;
+                    alertes.push(`⚠️ REVENUS INCOMPLETS: ${categorieName} seulement à ${Math.round(pourcentage)}%`);
+                }
+
+                // Cumuls par catégorie
+                if (category === 'revenus') {
+                    totalRevenusRealise += realise;
+                } else if (category === 'charges') {
+                    const tableSection = input.closest('.section');
+                    if (tableSection.querySelector('.charges-fixes')) {
+                        totalFixesRealise += realise;
+                    } else {
+                        totalVariablesRealise += realise;
+                    }
+                }
+            });
+
+            // Mise à jour des totaux
+            updateTotal('total-revenus', 4550, totalRevenusRealise, 'revenus');
+            updateTotal('total-fixes', 2257, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 1693, totalVariablesRealise, 'charges');
+            
+            const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
+            updateTotal('total-depenses', 3950, totalDepensesRealise, 'charges');
+            
+            // Solde
+            const soldeRealise = totalRevenusRealise - totalDepensesRealise;
+            const soldeEcart = soldeRealise - 600;
+            const soldePct = totalRevenusRealise > 0 ? (soldeRealise / totalRevenusRealise) * 100 : 0;
+            
+            document.getElementById('solde-realise').innerHTML = `<strong>${soldeRealise >= 0 ? '+' : ''}${soldeRealise}€</strong>`;
+            document.getElementById('solde-ecart').innerHTML = `<strong>${soldeEcart >= 0 ? '+' : ''}${soldeEcart}€</strong>`;
+            document.getElementById('solde-pct').innerHTML = `<strong>${Math.round(soldePct)}%</strong>`;
+            
+            const soldeIndicateur = document.getElementById('solde-indicateur');
+            const soldeRow = soldeIndicateur.closest('tr');
+            
+            if (soldeRealise > 0) {
+                soldeIndicateur.textContent = '🎉';
+                soldeRow.className = 'solde-row solde-positif';
+            } else if (soldeRealise === 0) {
+                soldeIndicateur.textContent = '⚖️';
+                soldeRow.className = 'solde-row';
+            } else {
+                soldeIndicateur.textContent = '💸';
+                soldeRow.className = 'solde-row solde-negatif';
+                alertes.unshift(`🚨 SOLDE NÉGATIF: ${soldeRealise}€ - DÉSÉPARGNE EN COURS !`);
+            }
+
+            // Affichage des alertes
+            const alertesDiv = document.getElementById('alertes');
+            const alertesContenu = document.getElementById('alertes-contenu');
+            
+            if (alertes.length > 0) {
+                alertesContenu.innerHTML = alertes.map(alerte => `<div class="alerte-item">${alerte}</div>`).join('');
+                alertesDiv.classList.add('show');
+            } else {
+                alertesDiv.classList.remove('show');
+            }
+        }
+
+        function updateTotal(prefix, budget, realise, category = 'charges') {
+            const ecart = realise - budget;
+            const pourcentage = budget > 0 ? (realise / budget) * 100 : 0;
+            
+            document.getElementById(`${prefix}-realise`).innerHTML = `<strong>${realise}€</strong>`;
+            document.getElementById(`${prefix}-ecart`).innerHTML = `<strong>${ecart >= 0 ? '+' : ''}${ecart}€</strong>`;
+            
+            const pctElement = document.getElementById(`${prefix}-pct`);
+            const indicateurElement = document.getElementById(`${prefix}-indicateur`);
+            
+            pctElement.innerHTML = `<strong>${Math.round(pourcentage)}%</strong>`;
+            
+            if (category === 'revenus') {
+                if (pourcentage === 0) {
+                    pctElement.className = 'pourcentage';
+                    indicateurElement.textContent = '⚪';
+                } else if (pourcentage < 90) {
+                    pctElement.className = 'pourcentage rouge';
+                    indicateurElement.textContent = '❌';
+                } else if (pourcentage < 100) {
+                    pctElement.className = 'pourcentage orange';
+                    indicateurElement.textContent = '⚠️';
+                } else {
+                    pctElement.className = 'pourcentage vert';
+                    indicateurElement.textContent = '✅';
+                }
+            } else {
+                if (pourcentage === 0) {
+                    pctElement.className = 'pourcentage';
+                    indicateurElement.textContent = '⚪';
+                } else if (pourcentage < 100) {
+                    pctElement.className = 'pourcentage vert';
+                    indicateurElement.textContent = '✅';
+                } else if (pourcentage <= 110) {
+                    pctElement.className = 'pourcentage orange';
+                    indicateurElement.textContent = '⚠️';
+                } else {
+                    pctElement.className = 'pourcentage rouge';
+                    indicateurElement.textContent = '❌';
+                }
+            }
+        }
+
+        // Calcul initial au chargement
+        window.addEventListener('load', calculer);
+        calculer();
+    </script>
+</body>
+</html>

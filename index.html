@@ -1089,6 +1089,31 @@
                               "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
             document.getElementById('mois').value = noms_mois[moisActuel];
             
+            // Ajouter l'autosave à tous les inputs existants
+            document.querySelectorAll('.montant-input').forEach(input => {
+                input.addEventListener('change', autoSave);
+                input.addEventListener('input', function() {
+                    // Déclencher l'autosave après une pause de frappe
+                    if (autoSaveTimeout) {
+                        clearTimeout(autoSaveTimeout);
+                    }
+                    autoSaveTimeout = setTimeout(() => {
+                        const mois = document.getElementById('mois').value.trim();
+                        const annee = document.getElementById('annee').value.trim();
+                        
+                        if (mois && annee) {
+                            showStatus('💾 Auto-sauvegarde...', 'loading');
+                            sauvegarderCloud();
+                        }
+                    }, 3000); // 3 secondes après l'arrêt de la frappe
+                });
+            });
+            
+            // Charger automatiquement les données du mois en cours
+            setTimeout(() => {
+                chargerCloud();
+            }, 1000); // Attendre 1 seconde pour que la page soit bien chargée
+            
             calculer();
         });
 

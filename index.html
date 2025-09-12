@@ -1091,8 +1091,12 @@
             
             // Ajouter l'autosave à tous les inputs existants
             document.querySelectorAll('.montant-input').forEach(input => {
-                input.addEventListener('change', autoSave);
+                input.addEventListener('change', function() {
+                    calculer();
+                    autoSave();
+                });
                 input.addEventListener('input', function() {
+                    calculer();
                     // Déclencher l'autosave après une pause de frappe
                     if (autoSaveTimeout) {
                         clearTimeout(autoSaveTimeout);

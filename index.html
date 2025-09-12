@@ -267,7 +267,7 @@
                     <option value="Novembre">Novembre</option>
                     <option value="Décembre">Décembre</option>
                 </select>
-                <input type="number" id="annee" placeholder="2025" min="2024" max="2030">
+                <input type="number" id="annee" value="2025" min="2024" max="2030">
                 <button class="btn" onclick="sauvegarderCloud()" id="btn-sauv">💾 Sauvegarder</button>
                 <button class="btn" onclick="chargerCloud()" id="btn-load">📥 Charger</button>
                 <button class="btn btn-danger" onclick="reset()">🔄 Reset</button>
@@ -878,7 +878,18 @@
         }
 
         // Calcul initial au chargement
-        window.addEventListener('load', calculer);
+        window.addEventListener('load', function() {
+            // Définir l'année en cours automatiquement
+            document.getElementById('annee').value = new Date().getFullYear();
+            
+            // Définir le mois en cours automatiquement
+            const moisActuel = new Date().getMonth(); // 0 = janvier, 1 = février, etc.
+            const noms_mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
+                              "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            document.getElementById('mois').value = noms_mois[moisActuel];
+            
+            calculer();
+        });
         calculer();
     </script>
 </body>

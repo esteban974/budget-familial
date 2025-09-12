@@ -97,6 +97,7 @@
         .charges-fixes { background: linear-gradient(135deg, #ed8936, #dd6b20); }
         .charges-variables { background: linear-gradient(135deg, #9f7aea, #805ad5); }
         .bilan { background: linear-gradient(135deg, #4299e1, #3182ce); }
+        .saisie-rapide { background: linear-gradient(135deg, #667eea, #764ba2); }
         .table-container {
             background: white;
         }
@@ -229,6 +230,51 @@
             height: 20px;
             border-radius: 50%;
         }
+        .saisie-form {
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .saisie-form select,
+        .saisie-form input {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+        .saisie-form select {
+            min-width: 200px;
+        }
+        .saisie-form input {
+            width: 120px;
+            text-align: right;
+        }
+        .btn-ajouter {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-ajouter:hover {
+            transform: translateY(-2px);
+        }
+        .message-rapide {
+            width: 100%;
+            text-align: center;
+            color: #38a169;
+            font-weight: bold;
+            min-height: 20px;
+            padding: 10px;
+        }
         @media (max-width: 768px) {
             .main-content {
                 padding: 15px;
@@ -254,16 +300,15 @@
                 margin: 5px;
                 font-size: 14px;
             }
-            /* Saisie rapide mobile */
-            .section div[style*="display: flex"] {
+            .saisie-form {
                 flex-direction: column;
                 gap: 10px;
                 align-items: stretch;
             }
-            #categorie-rapide {
+            .saisie-form select {
                 min-width: 100%;
             }
-            #montant-rapide {
+            .saisie-form input {
                 width: 100%;
             }
             .budget-table {
@@ -329,7 +374,7 @@
                     <option value="Novembre">Novembre</option>
                     <option value="Décembre">Décembre</option>
                 </select>
-                <input type="number" id="annee" value="2025" min="2024" max="2030">
+                <input type="number" id="annee" min="2024" max="2030">
                 <button class="btn" onclick="sauvegarderCloud()" id="btn-sauv">💾 Sauvegarder</button>
                 <button class="btn" onclick="chargerCloud()" id="btn-load">📥 Charger</button>
                 <button class="btn btn-danger" onclick="reset()">🔄 Reset</button>
@@ -350,6 +395,33 @@
                 <div class="legende-item">
                     <div class="pastille rouge"></div>
                     <span>❌ Dépassement (&gt;110%)</span>
+                </div>
+            </div>
+
+            <!-- SAISIE RAPIDE -->
+            <div class="section">
+                <div class="section-header saisie-rapide">⚡ SAISIE RAPIDE</div>
+                <div class="table-container">
+                    <div class="saisie-form">
+                        <select id="categorie-rapide">
+                            <option value="">Choisir une catégorie</option>
+                            <option value="maison">🏠 Maison</option>
+                            <option value="banque">💳 Banque/Assurances</option>
+                            <option value="energie">⚡ Énergie</option>
+                            <option value="telephonie">📱 Téléphonie/Internet</option>
+                            <option value="transports">🚗 Transports</option>
+                            <option value="sports">🏃 Sports/Activités</option>
+                            <option value="sante">🏥 Santé</option>
+                            <option value="alimentation">🛒 Alimentation</option>
+                            <option value="resto">🍕 Resto/Take away</option>
+                            <option value="consommation">🛍️ Consommation/Plaisir</option>
+                            <option value="vacances">🏖️ Vacances</option>
+                            <option value="marge">⚠️ Imprévus</option>
+                        </select>
+                        <input type="number" id="montant-rapide" placeholder="Montant €" step="0.01">
+                        <button class="btn-ajouter" onclick="ajouterDepense()">➕ Ajouter</button>
+                        <div id="message-rapide" class="message-rapide"></div>
+                    </div>
                 </div>
             </div>
 
@@ -597,6 +669,73 @@
     <script>
         // URL de votre API Google Apps Script
         const API_URL = 'https://script.google.com/macros/s/AKfycbyoYyxL1Sh0bV-BEemcFVn4o7OJMT3JHaM7btVFZUBH_r0C3EoCo7BDi4dWIqbW1Sv1/exec';
+
+        // Ajouter une dépense via la saisie rapide
+        function ajouterDepense() {
+            const categorieSelect = document.getElementById('categorie-rapide');
+            const montantInput = document.getElementById('montant-rapide');
+            const messageDiv = document.getElementById('message-rapide');
+            
+            const categorie = categorieSelect.value;
+            const montant = parseFloat(montantInput.value);
+            
+            // Validation
+            if (!categorie) {
+                messageDiv.textContent = '❌ Veuillez choisir une catégorie';
+                messageDiv.style.color = '#e53e3e';
+                return;
+            }
+            
+            if (!montant || montant <= 0) {
+                messageDiv.textContent = '❌ Veuillez saisir un montant valide';
+                messageDiv.style.color = '#e53e3e';
+                return;
+            }
+            
+            // Mapping des catégories avec les champs du tableau
+            const mapping = {
+                'maison': 6,          // 7ème input (index 6)
+                'banque': 7,          // 8ème input
+                'energie': 8,         // 9ème input  
+                'telephonie': 9,      // 10ème input
+                'transports': 10,     // 11ème input
+                'sports': 11,         // 12ème input
+                'sante': 12,          // 13ème input
+                'alimentation': 13,   // 14ème input
+                'resto': 14,          // 15ème input
+                'consommation': 15,   // 16ème input
+                'vacances': 16,       // 17ème input
+                'marge': 17           // 18ème input
+            };
+            
+            const inputIndex = mapping[categorie];
+            if (inputIndex !== undefined) {
+                const inputs = document.querySelectorAll('.montant-input');
+                const targetInput = inputs[inputIndex];
+                
+                // Ajouter au montant existant
+                const montantExistant = parseFloat(targetInput.value) || 0;
+                const nouveauMontant = montantExistant + montant;
+                targetInput.value = nouveauMontant;
+                
+                // Recalculer
+                calculer();
+                
+                // Message de confirmation
+                const nomCategorie = categorieSelect.options[categorieSelect.selectedIndex].text;
+                messageDiv.textContent = `✅ +${montant}€ ajouté à ${nomCategorie}`;
+                messageDiv.style.color = '#38a169';
+                
+                // Reset du formulaire
+                montantInput.value = '';
+                categorieSelect.selectedIndex = 0;
+                
+                // Effacer le message après 3 secondes
+                setTimeout(() => {
+                    messageDiv.textContent = '';
+                }, 3000);
+            }
+        }
 
         // Afficher un message de statut
         function showStatus(message, type) {
@@ -952,6 +1091,19 @@
             
             calculer();
         });
+
+        // Permettre l'ajout avec la touche Entrée
+        document.addEventListener('DOMContentLoaded', function() {
+            const montantInput = document.getElementById('montant-rapide');
+            if (montantInput) {
+                montantInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        ajouterDepense();
+                    }
+                });
+            }
+        });
+
         calculer();
     </script>
 </body>

@@ -357,7 +357,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>💰 BUDGET FAMILIAL - VERSION CLOUD</h1>
+            <h1>Budget Familial - Version Cloud</h1>
             <div class="periode">
                 <select id="mois">
                     <option value="">Sélectionner un mois</option>
@@ -375,9 +375,9 @@
                     <option value="Décembre">Décembre</option>
                 </select>
                 <input type="number" id="annee" min="2024" max="2030">
-                <button class="btn" onclick="sauvegarderCloud()" id="btn-sauv">💾 Sauvegarder</button>
-                <button class="btn" onclick="chargerCloud()" id="btn-load">📥 Charger</button>
-                <button class="btn btn-danger" onclick="reset()">🔄 Reset</button>
+                <button class="btn" onclick="sauvegarderCloud()" id="btn-sauv">Sauvegarder</button>
+                <button class="btn" onclick="chargerCloud()" id="btn-load">Charger</button>
+                <button class="btn btn-danger" onclick="reset()">Reset</button>
                 <div class="status" id="status" style="display: none;"></div>
             </div>
         </div>
@@ -386,40 +386,42 @@
             <div class="legende">
                 <div class="legende-item">
                     <div class="pastille vert"></div>
-                    <span>✅ Budget respecté (&lt;100%)</span>
+                    <span>Budget respecté (&lt;100%)</span>
                 </div>
                 <div class="legende-item">
                     <div class="pastille orange"></div>
-                    <span>⚠️ Attention (100-110%)</span>
+                    <span>Attention (100-110%)</span>
                 </div>
                 <div class="legende-item">
                     <div class="pastille rouge"></div>
-                    <span>❌ Dépassement (&gt;110%)</span>
+                    <span>Dépassement (&gt;110%)</span>
                 </div>
             </div>
 
             <!-- SAISIE RAPIDE -->
             <div class="section">
-                <div class="section-header saisie-rapide">⚡ SAISIE RAPIDE</div>
+                <div class="section-header saisie-rapide">Saisie Rapide</div>
                 <div class="table-container">
                     <div class="saisie-form">
                         <select id="categorie-rapide">
                             <option value="">Choisir une catégorie</option>
-                            <option value="maison">🏠 Maison</option>
-                            <option value="banque">💳 Banque/Assurances</option>
-                            <option value="energie">⚡ Énergie</option>
-                            <option value="telephonie">📱 Téléphonie/Internet</option>
-                            <option value="transports">🚗 Transports</option>
-                            <option value="sports">🏃 Sports/Activités</option>
-                            <option value="sante">🏥 Santé</option>
-                            <option value="alimentation">🛒 Alimentation</option>
-                            <option value="resto">🍕 Resto/Take away</option>
-                            <option value="consommation">🛍️ Consommation/Plaisir</option>
-                            <option value="vacances">🏖️ Vacances</option>
-                            <option value="marge">⚠️ Imprévus</option>
+                            <option value="logement">Logement</option>
+                            <option value="energie">Énergie</option>
+                            <option value="telephonie">Téléphonie/Internet</option>
+                            <option value="banque">Banque/Impôts</option>
+                            <option value="scolaire">Scolaire</option>
+                            <option value="sports">Sports/Loisirs enfants</option>
+                            <option value="sante">Santé courante</option>
+                            <option value="transport-abo">Transport abonnements</option>
+                            <option value="alimentation">Alimentation maison</option>
+                            <option value="resto">Resto/Take away</option>
+                            <option value="transport">Transport ponctuel</option>
+                            <option value="consommation">Consommation/Plaisir</option>
+                            <option value="vacances">Provision vacances</option>
+                            <option value="travaux">Provision travaux/imprevus</option>
                         </select>
                         <input type="number" id="montant-rapide" placeholder="Montant €" step="0.01">
-                        <button class="btn-ajouter" onclick="ajouterDepense()">➕ Ajouter</button>
+                        <button class="btn-ajouter" onclick="ajouterDepense()">Ajouter</button>
                         <div id="message-rapide" class="message-rapide"></div>
                     </div>
                 </div>
@@ -427,7 +429,7 @@
 
             <!-- REVENUS -->
             <div class="section">
-                <div class="section-header revenus">💵 REVENUS</div>
+                <div class="section-header revenus">Revenus</div>
                 <div class="table-container">
                     <table class="budget-table">
                         <thead>
@@ -459,15 +461,15 @@
                             </tr>
                             <tr>
                                 <td>CAF</td>
-                                <td class="montant-display">550€</td>
-                                <td><input type="number" class="montant-input" data-budget="550" data-category="revenus" onchange="calculer()"></td>
+                                <td class="montant-display">400€</td>
+                                <td><input type="number" class="montant-input" data-budget="400" data-category="revenus" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL REVENUS</strong></td>
-                                <td class="montant-display"><strong>4 550€</strong></td>
+                                <td class="montant-display"><strong>4 400€</strong></td>
                                 <td class="montant-display" id="total-revenus-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-revenus-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-revenus-pct"><strong>0%</strong></td>
@@ -480,7 +482,7 @@
 
             <!-- CHARGES FIXES -->
             <div class="section">
-                <div class="section-header charges-fixes">🏠 CHARGES FIXES</div>
+                <div class="section-header charges-fixes">Charges fixes</div>
                 <div class="table-container">
                     <table class="budget-table">
                         <thead>
@@ -495,47 +497,47 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Maison (prêt + copro + assurances)</td>
-                                <td class="montant-display">1 111€</td>
-                                <td><input type="number" class="montant-input" data-budget="1111" data-category="charges" onchange="calculer()"></td>
+                                <td>Logement complet</td>
+                                <td class="montant-display">1 200€</td>
+                                <td><input type="number" class="montant-input" data-budget="1200" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Banque/Assurances/Impôts</td>
-                                <td class="montant-display">161€</td>
-                                <td><input type="number" class="montant-input" data-budget="161" data-category="charges" onchange="calculer()"></td>
-                                <td class="montant-display ecart">0€</td>
-                                <td class="pourcentage">0%</td>
-                                <td class="indicateur">⚪</td>
-                            </tr>
-                            <tr>
-                                <td>Énergie (électricité + gaz)</td>
-                                <td class="montant-display">150€</td>
-                                <td><input type="number" class="montant-input" data-budget="150" data-category="charges" onchange="calculer()"></td>
+                                <td>Énergie</td>
+                                <td class="montant-display">180€</td>
+                                <td><input type="number" class="montant-input" data-budget="180" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
                                 <td>Téléphonie/Internet</td>
-                                <td class="montant-display">100€</td>
-                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">160€</td>
+                                <td><input type="number" class="montant-input" data-budget="160" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Transports</td>
-                                <td class="montant-display">300€</td>
-                                <td><input type="number" class="montant-input" data-budget="300" data-category="charges" onchange="calculer()"></td>
+                                <td>Banque/Impôts</td>
+                                <td class="montant-display">90€</td>
+                                <td><input type="number" class="montant-input" data-budget="90" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Sports/Activités</td>
+                                <td>Scolaire</td>
+                                <td class="montant-display">180€</td>
+                                <td><input type="number" class="montant-input" data-budget="180" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Sports/Loisirs enfants</td>
                                 <td class="montant-display">280€</td>
                                 <td><input type="number" class="montant-input" data-budget="280" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -543,16 +545,24 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Santé non remboursée</td>
-                                <td class="montant-display">155€</td>
-                                <td><input type="number" class="montant-input" data-budget="155" data-category="charges" onchange="calculer()"></td>
+                                <td>Santé courante</td>
+                                <td class="montant-display">80€</td>
+                                <td><input type="number" class="montant-input" data-budget="80" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Transport abonnements</td>
+                                <td class="montant-display">40€</td>
+                                <td><input type="number" class="montant-input" data-budget="40" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 257€</strong></td>
+                                <td class="montant-display"><strong>2 210€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -565,7 +575,7 @@
 
             <!-- CHARGES VARIABLES -->
             <div class="section">
-                <div class="section-header charges-variables">🛒 CHARGES VARIABLES</div>
+                <div class="section-header charges-variables">Charges variables</div>
                 <div class="table-container">
                     <table class="budget-table">
                         <thead>
@@ -580,48 +590,56 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>🛒 Alimentation (courses + petits déj/goûters)</td>
-                                <td class="montant-display">700€</td>
-                                <td><input type="number" class="montant-input" data-budget="700" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td>Alimentation maison</td>
+                                <td class="montant-display">1 200€</td>
+                                <td><input type="number" class="montant-input" data-budget="1200" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>🍕 Resto/Take away</td>
-                                <td class="montant-display">100€</td>
-                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td>Resto/Take away</td>
+                                <td class="montant-display">120€</td>
+                                <td><input type="number" class="montant-input" data-budget="120" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>🛍️ Consommation/Plaisir</td>
-                                <td class="montant-display">400€</td>
-                                <td><input type="number" class="montant-input" data-budget="400" data-category="charges" onchange="calculer()"></td>
+                                <td>Transport ponctuel</td>
+                                <td class="montant-display">150€</td>
+                                <td><input type="number" class="montant-input" data-budget="150" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>🏖️ Provision vacances</td>
-                                <td class="montant-display">350€</td>
-                                <td><input type="number" class="montant-input" data-budget="350" data-category="charges" onchange="calculer()"></td>
+                                <td>Consommation/Plaisir</td>
+                                <td class="montant-display">260€</td>
+                                <td><input type="number" class="montant-input" data-budget="260" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>⚠️ Marge sécurité/imprévus</td>
-                                <td class="montant-display">143€</td>
-                                <td><input type="number" class="montant-input" data-budget="143" data-category="charges" onchange="calculer()"></td>
+                                <td>Provision vacances</td>
+                                <td class="montant-display">300€</td>
+                                <td><input type="number" class="montant-input" data-budget="300" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td>Provision travaux/imprevus</td>
+                                <td class="montant-display">160€</td>
+                                <td><input type="number" class="montant-input" data-budget="160" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES VARIABLES</strong></td>
-                                <td class="montant-display"><strong>1 693€</strong></td>
+                                <td class="montant-display"><strong>2 190€</strong></td>
                                 <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
@@ -634,21 +652,21 @@
 
             <!-- BILAN -->
             <div class="section">
-                <div class="section-header bilan">📊 BILAN MENSUEL</div>
+                <div class="section-header bilan">Bilan mensuel</div>
                 <div class="table-container">
                     <table class="budget-table">
                         <tbody>
                             <tr class="total-row">
                                 <td style="width: 40%;"><strong>TOTAL DÉPENSES</strong></td>
-                                <td class="montant-display" style="width: 15%;"><strong>3 950€</strong></td>
+                                <td class="montant-display" style="width: 15%;"><strong>4 400€</strong></td>
                                 <td class="montant-display" id="total-depenses-realise" style="width: 15%;"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-depenses-ecart" style="width: 15%;"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-depenses-pct" style="width: 10%;"><strong>0%</strong></td>
                                 <td class="indicateur" id="total-depenses-indicateur" style="width: 5%;">⚪</td>
                             </tr>
                             <tr class="solde-row">
-                                <td><strong>💰 SOLDE MENSUEL</strong></td>
-                                <td class="montant-display"><strong>+600€</strong></td>
+                                <td><strong>SOLDE MENSUEL</strong></td>
+                                <td class="montant-display"><strong>0€</strong></td>
                                 <td class="montant-display" id="solde-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="solde-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="solde-pct"><strong>0%</strong></td>
@@ -660,16 +678,13 @@
             </div>
 
             <div class="alertes" id="alertes">
-                <h3 style="color: #c53030; margin-bottom: 15px;">🚨 ALERTES BUDGÉTAIRES</h3>
+                <h3 style="color: #c53030; margin-bottom: 15px;">Alertes budgétaires</h3>
                 <div id="alertes-contenu"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // URL de votre API Google Apps Script
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyoYyxL1Sh0bV-BEemcFVn4o7OJMT3JHaM7btVFZUBH_r0C3EoCo7BDi4dWIqbW1Sv1/exec';
-
         // Ajouter une dépense via la saisie rapide
         function ajouterDepense() {
             const categorieSelect = document.getElementById('categorie-rapide');
@@ -681,31 +696,33 @@
             
             // Validation
             if (!categorie) {
-                messageDiv.textContent = '❌ Veuillez choisir une catégorie';
+                messageDiv.textContent = 'Veuillez choisir une catégorie';
                 messageDiv.style.color = '#e53e3e';
                 return;
             }
             
             if (!montant || montant <= 0) {
-                messageDiv.textContent = '❌ Veuillez saisir un montant valide';
+                messageDiv.textContent = 'Veuillez saisir un montant valide';
                 messageDiv.style.color = '#e53e3e';
                 return;
             }
             
-            // Mapping des catégories avec les champs du tableau
+            // Mapping des catégories avec les champs du tableau (nouveau système)
             const mapping = {
-                'maison': 3,          // 4ème input (Maison - 1er des charges fixes)
-                'banque': 4,          // 5ème input (Banque/Assurances)
-                'energie': 5,         // 6ème input (Énergie)  
-                'telephonie': 6,      // 7ème input (Téléphonie)
-                'transports': 7,      // 8ème input (Transports)
-                'sports': 8,          // 9ème input (Sports)
-                'sante': 9,           // 10ème input (Santé)
-                'alimentation': 10,   // 11ème input (Alimentation)
-                'resto': 11,          // 12ème input (Resto)
-                'consommation': 12,   // 13ème input (Consommation)
-                'vacances': 13,       // 14ème input (Vacances)
-                'marge': 14           // 15ème input (Marge sécurité)
+                'logement': 3,          // Logement complet
+                'energie': 4,           // Énergie
+                'telephonie': 5,        // Téléphonie/Internet
+                'banque': 6,            // Banque/Impôts
+                'scolaire': 7,          // Scolaire
+                'sports': 8,            // Sports/Loisirs enfants
+                'sante': 9,             // Santé courante
+                'transport-abo': 10,    // Transport abonnements
+                'alimentation': 11,     // Alimentation maison
+                'resto': 12,            // Resto/Take away
+                'transport': 13,        // Transport ponctuel
+                'consommation': 14,     // Consommation/Plaisir
+                'vacances': 15,         // Provision vacances
+                'travaux': 16           // Provision travaux/imprevus
             };
             
             const inputIndex = mapping[categorie];
@@ -723,7 +740,7 @@
                 
                 // Message de confirmation
                 const nomCategorie = categorieSelect.options[categorieSelect.selectedIndex].text;
-                messageDiv.textContent = `✅ +${montant}€ ajouté à ${nomCategorie}`;
+                messageDiv.textContent = `+${montant}€ ajouté à ${nomCategorie}`;
                 messageDiv.style.color = '#38a169';
                 
                 // Reset du formulaire
@@ -789,7 +806,7 @@
                 document.body.appendChild(iframe);
                 
                 iframe.onload = function() {
-                    showStatus('💾 Données sauvegardées avec succès', 'success');
+                    showStatus('Données sauvegardées avec succès', 'success');
                     setTimeout(() => {
                         if (document.body.contains(iframe)) {
                             document.body.removeChild(iframe);
@@ -798,7 +815,7 @@
                 };
                 
                 iframe.onerror = function() {
-                    showStatus('❌ Erreur de sauvegarde', 'error');
+                    showStatus('Erreur de sauvegarde', 'error');
                     setTimeout(() => {
                         if (document.body.contains(iframe)) {
                             document.body.removeChild(iframe);
@@ -809,7 +826,7 @@
                 iframe.src = url;
                 
             } catch (error) {
-                showStatus(`❌ Erreur: ${error.message}`, 'error');
+                showStatus(`Erreur: ${error.message}`, 'error');
             }
             
             btnSauv.disabled = false;
@@ -838,13 +855,13 @@
                 window[callbackName] = function(result) {
                     try {
                         if (result && result.success) {
-                            // Mapper les données aux champs (version consolidée)
+                            // Mapper les données aux champs (nouvelles catégories)
                             const categories = [
                                 "Salaire Marie", "Salaire Etienne", "CAF",
-                                "Maison", "Banque/Assurances/Impôts", "Énergie", 
-                                "Téléphonie/Internet", "Transports", "Sports/Activités", "Santé",
-                                "Alimentation", "Resto/Take away", 
-                                "Consommation/Plaisir", "Provision vacances", "Marge sécurité"
+                                "Logement", "Énergie", "Téléphonie/Internet", 
+                                "Banque/Impôts", "Scolaire", "Sports/Loisirs", "Santé", "Transport abonnements",
+                                "Alimentation", "Resto/Take away", "Transport ponctuel",
+                                "Consommation/Plaisir", "Provision vacances", "Provision travaux"
                             ];
                             
                             document.querySelectorAll('.montant-input').forEach((input, index) => {
@@ -853,12 +870,12 @@
                             });
                             
                             calculer();
-                            showStatus(`📥 Données chargées (${result.count || 0} éléments)`, 'success');
+                            showStatus(`Données chargées (${result.count || 0} éléments)`, 'success');
                         } else {
-                            showStatus('📥 Aucune donnée trouvée pour ce mois', 'error');
+                            showStatus('Aucune donnée trouvée pour ce mois', 'error');
                         }
                     } catch (e) {
-                        showStatus('❌ Erreur lors du traitement des données', 'error');
+                        showStatus('Erreur lors du traitement des données', 'error');
                     }
                     
                     // Nettoyer
@@ -878,7 +895,7 @@
                 
                 script.src = `${API_URL}?${params.toString()}`;
                 script.onerror = function() {
-                    showStatus('❌ Erreur de chargement', 'error');
+                    showStatus('Erreur de chargement', 'error');
                     if (document.body.contains(script)) {
                         document.body.removeChild(script);
                     }
@@ -888,7 +905,7 @@
                 document.body.appendChild(script);
                 
             } catch (error) {
-                showStatus(`❌ Erreur: ${error.message}`, 'error');
+                showStatus(`Erreur: ${error.message}`, 'error');
             }
             
             btnLoad.disabled = false;
@@ -896,12 +913,12 @@
 
         // Reset complet
         function reset() {
-            if (confirm('🔄 Êtes-vous sûr de vouloir effacer toutes les données saisies ?')) {
+            if (confirm('Êtes-vous sûr de vouloir effacer toutes les données saisies ?')) {
                 document.querySelectorAll('.montant-input').forEach(input => {
                     input.value = '';
                 });
                 calculer();
-                showStatus('✅ Données effacées !', 'success');
+                showStatus('Données effacées !', 'success');
             }
         }
 
@@ -964,18 +981,18 @@
                 if (critical && category === 'charges' && pourcentage > 75) {
                     const categorieName = row.querySelector('td').textContent;
                     if (pourcentage > 110) {
-                        alertes.push(`🚨 DÉPASSEMENT CRITIQUE: ${categorieName} (${Math.round(pourcentage)}%)`);
+                        alertes.push(`DÉPASSEMENT CRITIQUE: ${categorieName} (${Math.round(pourcentage)}%)`);
                     } else if (pourcentage > 100) {
-                        alertes.push(`⚠️ BUDGET DÉPASSÉ: ${categorieName} (${Math.round(pourcentage)}%)`);
+                        alertes.push(`BUDGET DÉPASSÉ: ${categorieName} (${Math.round(pourcentage)}%)`);
                     } else if (pourcentage > 75) {
-                        alertes.push(`⚡ ATTENTION: ${categorieName} à ${Math.round(pourcentage)}% - Ralentir !`);
+                        alertes.push(`ATTENTION: ${categorieName} à ${Math.round(pourcentage)}% - Ralentir !`);
                     }
                 }
 
                 // Alertes pour les revenus manquants
                 if (category === 'revenus' && pourcentage < 90 && pourcentage > 0) {
                     const categorieName = row.querySelector('td').textContent;
-                    alertes.push(`⚠️ REVENUS INCOMPLETS: ${categorieName} seulement à ${Math.round(pourcentage)}%`);
+                    alertes.push(`REVENUS INCOMPLETS: ${categorieName} seulement à ${Math.round(pourcentage)}%`);
                 }
 
                 // Cumuls par catégorie
@@ -992,16 +1009,16 @@
             });
 
             // Mise à jour des totaux
-            updateTotal('total-revenus', 4550, totalRevenusRealise, 'revenus');
-            updateTotal('total-fixes', 2257, totalFixesRealise, 'charges');
-            updateTotal('total-variables', 1693, totalVariablesRealise, 'charges');
+            updateTotal('total-revenus', 4400, totalRevenusRealise, 'revenus');
+            updateTotal('total-fixes', 2210, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 2190, totalVariablesRealise, 'charges');
             
             const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
-            updateTotal('total-depenses', 3950, totalDepensesRealise, 'charges');
+            updateTotal('total-depenses', 4400, totalDepensesRealise, 'charges');
             
             // Solde
             const soldeRealise = totalRevenusRealise - totalDepensesRealise;
-            const soldeEcart = soldeRealise - 600;
+            const soldeEcart = soldeRealise - 0;
             const soldePct = totalRevenusRealise > 0 ? (soldeRealise / totalRevenusRealise) * 100 : 0;
             
             document.getElementById('solde-realise').innerHTML = `<strong>${soldeRealise >= 0 ? '+' : ''}${soldeRealise}€</strong>`;
@@ -1020,7 +1037,7 @@
             } else {
                 soldeIndicateur.textContent = '💸';
                 soldeRow.className = 'solde-row solde-negatif';
-                alertes.unshift(`🚨 SOLDE NÉGATIF: ${soldeRealise}€ - DÉSÉPARGNE EN COURS !`);
+                alertes.unshift(`SOLDE NÉGATIF: ${soldeRealise}€ - DÉSÉPARGNE EN COURS !`);
             }
 
             // Affichage des alertes
@@ -1089,34 +1106,16 @@
                               "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
             document.getElementById('mois').value = noms_mois[moisActuel];
             
-            // Ajouter l'autosave à tous les inputs existants
+            // Ajouter les event listeners pour les calculs
             document.querySelectorAll('.montant-input').forEach(input => {
-                input.addEventListener('change', function() {
-                    calculer();
-                    autoSave();
-                });
-                input.addEventListener('input', function() {
-                    calculer();
-                    // Déclencher l'autosave après une pause de frappe
-                    if (autoSaveTimeout) {
-                        clearTimeout(autoSaveTimeout);
-                    }
-                    autoSaveTimeout = setTimeout(() => {
-                        const mois = document.getElementById('mois').value.trim();
-                        const annee = document.getElementById('annee').value.trim();
-                        
-                        if (mois && annee) {
-                            showStatus('💾 Auto-sauvegarde...', 'loading');
-                            sauvegarderCloud();
-                        }
-                    }, 3000); // 3 secondes après l'arrêt de la frappe
-                });
+                input.addEventListener('change', calculer);
+                input.addEventListener('input', calculer);
             });
             
             // Charger automatiquement les données du mois en cours
             setTimeout(() => {
                 chargerCloud();
-            }, 1000); // Attendre 1 seconde pour que la page soit bien chargée
+            }, 1000);
             
             calculer();
         });

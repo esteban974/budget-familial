@@ -736,7 +736,10 @@
                 targetInput.value = nouveauMontant;
                 
                 // Recalculer
-                calculer();
+                // Charger automatiquement les données du mois en cours
+            setTimeout(() => {
+                chargerCloud();
+            }, 1000);
                 
                 // Message de confirmation
                 const nomCategorie = categorieSelect.options[categorieSelect.selectedIndex].text;

@@ -1018,7 +1018,7 @@
             
             // Solde
             const soldeRealise = totalRevenusRealise - totalDepensesRealise;
-            const soldeEcart = soldeRealise - 0;
+            const soldeEcart = soldeRealise - 200;
             const soldePct = totalRevenusRealise > 0 ? (soldeRealise / totalRevenusRealise) * 100 : 0;
             
             document.getElementById('solde-realise').innerHTML = `<strong>${soldeRealise >= 0 ? '+' : ''}${soldeRealise}€</strong>`;

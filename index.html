@@ -1104,7 +1104,7 @@
             document.getElementById('annee').value = new Date().getFullYear();
             
             // Définir le mois en cours automatiquement
-            const moisActuel = new Date().getMonth(); // 0 = janvier, 1 = février, etc.
+            const moisActuel = new Date().getMonth();
             const noms_mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", 
                               "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
             document.getElementById('mois').value = noms_mois[moisActuel];
@@ -1115,12 +1115,75 @@
                 input.addEventListener('input', calculer);
             });
             
-            // Charger automatiquement les données du mois en cours
-            setTimeout(() => {
-                chargerCloud();
-            }, 1000);
-            
             calculer();
+            
+            // Charger automatiquement les données du mois en cours après que tout soit initialisé
+            setTimeout(() => {
+                const mois = document.getElementById('mois').value.trim();
+                const annee = document.getElementById('annee').value.trim();
+                
+                if (mois && annee) {
+                    // Dupliquer la logique de chargement ici pour éviter les erreurs de référence
+                    showStatus('Chargement automatique...', 'loading');
+                    
+                    try {
+                        const script = document.createElement('script');
+                        const callbackName = 'budgetCallback' + Date.now();
+                        
+                        window[callbackName] = function(result) {
+                            try {
+                                if (result && result.success) {
+                                    const categories = [
+                                        "Salaire Marie", "Salaire Etienne", "CAF",
+                                        "Logement", "Énergie", "Téléphonie/Internet", 
+                                        "Banque/Impôts", "Scolaire", "Sports/Loisirs", "Santé", "Transport abonnements",
+                                        "Alimentation", "Resto/Take away", "Transport ponctuel",
+                                        "Consommation/Plaisir", "Provision vacances", "Provision travaux"
+                                    ];
+                                    
+                                    document.querySelectorAll('.montant-input').forEach((input, index) => {
+                                        const categorie = categories[index];
+                                        input.value = result.data[categorie] || '';
+                                    });
+                                    
+                                    calculer();
+                                    showStatus(`Données chargées (${result.count || 0} éléments)`, 'success');
+                                } else {
+                                    showStatus('Aucune donnée pour ce mois', 'success');
+                                }
+                            } catch (e) {
+                                showStatus('Erreur lors du traitement', 'error');
+                            }
+                            
+                            if (document.body.contains(script)) {
+                                document.body.removeChild(script);
+                            }
+                            delete window[callbackName];
+                        };
+                        
+                        const params = new URLSearchParams({
+                            action: 'charger',
+                            mois: mois,
+                            annee: parseInt(annee),
+                            callback: callbackName
+                        });
+                        
+                        script.src = `${API_URL}?${params.toString()}`;
+                        script.onerror = function() {
+                            showStatus('Chargement impossible', 'error');
+                            if (document.body.contains(script)) {
+                                document.body.removeChild(script);
+                            }
+                            delete window[callbackName];
+                        };
+                        
+                        document.body.appendChild(script);
+                        
+                    } catch (error) {
+                        showStatus('Erreur technique', 'error');
+                    }
+                }
+            }, 1500);
         });
 
         // Permettre l'ajout avec la touche Entrée

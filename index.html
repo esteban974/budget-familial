@@ -476,15 +476,15 @@
                             </tr>
                             <tr>
                                 <td>CAF</td>
-                                <td class="montant-display">400€</td>
-                                <td><input type="number" class="montant-input" data-budget="400" data-category="revenus" onchange="calculer()"></td>
+                                <td class="montant-display">600€</td>
+                                <td><input type="number" class="montant-input" data-budget="600" data-category="revenus" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL REVENUS</strong></td>
-                                <td class="montant-display"><strong>4 400€</strong></td>
+                                <td class="montant-display"><strong>4 600€</strong></td>
                                 <td class="montant-display" id="total-revenus-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-revenus-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-revenus-pct"><strong>0%</strong></td>
@@ -544,6 +544,14 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
+                                <td>Assurances</td>
+                                <td class="montant-display">60€</td>
+                                <td><input type="number" class="montant-input" data-budget="60" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
                                 <td>Scolaire</td>
                                 <td class="montant-display">180€</td>
                                 <td><input type="number" class="montant-input" data-budget="180" data-category="charges" onchange="calculer()"></td>
@@ -577,7 +585,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 210€</strong></td>
+                                <td class="montant-display"><strong>2 270€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -723,9 +731,9 @@
             }
             
             const mapping = {
-                'logement': 3, 'energie': 4, 'telephonie': 5, 'banque': 6, 'scolaire': 7,
-                'sports': 8, 'sante': 9, 'transport-abo': 10, 'alimentation': 11,
-                'resto': 12, 'transport': 13, 'consommation': 14, 'vacances': 15, 'travaux': 16
+                'logement': 3, 'energie': 4, 'telephonie': 5, 'banque': 6, 'assurances': 7,
+                'scolaire': 8, 'sports': 9, 'sante': 10, 'transport-abo': 11, 'alimentation': 12,
+                'resto': 13, 'transport': 14, 'consommation': 15, 'vacances': 16, 'travaux': 17
             };
             
             const inputIndex = mapping[categorie];

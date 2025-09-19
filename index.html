@@ -424,6 +424,7 @@
                             <option value="energie">Énergie</option>
                             <option value="telephonie">Téléphonie/Internet</option>
                             <option value="banque">Banque/Impôts</option>
+                            <option value="assurances">Assurances</option>
                             <option value="scolaire">Scolaire</option>
                             <option value="sports">Sports/Loisirs enfants</option>
                             <option value="sante">Santé courante</option>
@@ -482,6 +483,14 @@
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
+                            <tr>
+                                <td>Autre (crédits d'impôts, divers)</td>
+                                <td class="montant-display">0€</td>
+                                <td><input type="number" class="montant-input" data-budget="0" data-category="revenus" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL REVENUS</strong></td>
                                 <td class="montant-display"><strong>4 600€</strong></td>
@@ -513,16 +522,16 @@
                         <tbody>
                             <tr>
                                 <td>Logement complet</td>
-                                <td class="montant-display">1 200€</td>
-                                <td><input type="number" class="montant-input" data-budget="1200" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">1 205€</td>
+                                <td><input type="number" class="montant-input" data-budget="1205" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
                                 <td>Énergie</td>
-                                <td class="montant-display">180€</td>
-                                <td><input type="number" class="montant-input" data-budget="180" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">218€</td>
+                                <td><input type="number" class="montant-input" data-budget="218" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -545,8 +554,8 @@
                             </tr>
                             <tr>
                                 <td>Assurances</td>
-                                <td class="montant-display">60€</td>
-                                <td><input type="number" class="montant-input" data-budget="60" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">51€</td>
+                                <td><input type="number" class="montant-input" data-budget="51" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -585,7 +594,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 270€</strong></td>
+                                <td class="montant-display"><strong>2 304€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -638,8 +647,8 @@
                             </tr>
                             <tr>
                                 <td>Consommation/Plaisir</td>
-                                <td class="montant-display">260€</td>
-                                <td><input type="number" class="montant-input" data-budget="260" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">400€</td>
+                                <td><input type="number" class="montant-input" data-budget="400" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -662,7 +671,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES VARIABLES</strong></td>
-                                <td class="montant-display"><strong>2 190€</strong></td>
+                                <td class="montant-display"><strong>2 330€</strong></td>
                                 <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
@@ -681,7 +690,7 @@
                         <tbody>
                             <tr class="total-row">
                                 <td style="width: 40%;"><strong>TOTAL DÉPENSES</strong></td>
-                                <td class="montant-display" style="width: 15%;"><strong>4 400€</strong></td>
+                                <td class="montant-display" style="width: 15%;"><strong>4 634€</strong></td>
                                 <td class="montant-display" id="total-depenses-realise" style="width: 15%;"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-depenses-ecart" style="width: 15%;"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-depenses-pct" style="width: 10%;"><strong>0%</strong></td>

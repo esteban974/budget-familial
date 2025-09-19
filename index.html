@@ -562,8 +562,8 @@
                             </tr>
                             <tr>
                                 <td>Scolaire</td>
-                                <td class="montant-display">180€</td>
-                                <td><input type="number" class="montant-input" data-budget="180" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">190€</td>
+                                <td><input type="number" class="montant-input" data-budget="190" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -594,7 +594,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 304€</strong></td>
+                                <td class="montant-display"><strong>2 314€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -623,8 +623,8 @@
                         <tbody>
                             <tr>
                                 <td>Alimentation maison</td>
-                                <td class="montant-display">1 200€</td>
-                                <td><input type="number" class="montant-input" data-budget="1200" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td class="montant-display">1 156€</td>
+                                <td><input type="number" class="montant-input" data-budget="1156" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -671,7 +671,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES VARIABLES</strong></td>
-                                <td class="montant-display"><strong>2 330€</strong></td>
+                                <td class="montant-display"><strong>2 286€</strong></td>
                                 <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
@@ -690,7 +690,7 @@
                         <tbody>
                             <tr class="total-row">
                                 <td style="width: 40%;"><strong>TOTAL DÉPENSES</strong></td>
-                                <td class="montant-display" style="width: 15%;"><strong>4 634€</strong></td>
+                                <td class="montant-display" style="width: 15%;"><strong>4 600€</strong></td>
                                 <td class="montant-display" id="total-depenses-realise" style="width: 15%;"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-depenses-ecart" style="width: 15%;"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-depenses-pct" style="width: 10%;"><strong>0%</strong></td>
@@ -740,9 +740,9 @@
             }
             
             const mapping = {
-                'logement': 3, 'energie': 4, 'telephonie': 5, 'banque': 6, 'assurances': 7,
-                'scolaire': 8, 'sports': 9, 'sante': 10, 'transport-abo': 11, 'alimentation': 12,
-                'resto': 13, 'transport': 14, 'consommation': 15, 'vacances': 16, 'travaux': 17
+                'logement': 4, 'energie': 5, 'telephonie': 6, 'banque': 7, 'assurances': 8,
+                'scolaire': 9, 'sports': 10, 'sante': 11, 'transport-abo': 12, 'alimentation': 13,
+                'resto': 14, 'transport': 15, 'consommation': 16, 'vacances': 17, 'travaux': 18
             };
             
             const inputIndex = mapping[categorie];
@@ -862,9 +862,9 @@
                     try {
                         if (result && result.success) {
                             const categories = [
-                                "Salaire Marie", "Salaire Etienne", "CAF",
+                                "Salaire Marie", "Salaire Etienne", "CAF", "Autre",
                                 "Logement", "Énergie", "Téléphonie/Internet", 
-                                "Banque/Impôts", "Scolaire", "Sports/Loisirs", "Santé", "Transport abonnements",
+                                "Banque/Impôts", "Assurances", "Scolaire", "Sports/Loisirs", "Santé", "Transport abonnements",
                                 "Alimentation", "Resto/Take away", "Transport ponctuel",
                                 "Consommation/Plaisir", "Provision vacances", "Provision travaux"
                             ];
@@ -1006,8 +1006,8 @@
             });
 
             updateTotal('total-revenus', 4600, totalRevenusRealise, 'revenus');
-            updateTotal('total-fixes', 2270, totalFixesRealise, 'charges');
-            updateTotal('total-variables', 2330, totalVariablesRealise, 'charges');
+            updateTotal('total-fixes', 2314, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 2286, totalVariablesRealise, 'charges');
             
             const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
             updateTotal('total-depenses', 4600, totalDepensesRealise, 'charges');

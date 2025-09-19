@@ -465,6 +465,7 @@
                             <option value="sports">Sports/Loisirs enfants</option>
                             <option value="sante">Santé courante</option>
                             <option value="transport-abo">Transport abonnements</option>
+                            <option value="abonnements-num">Abonnements numériques</option>
                             <option value="alimentation">Alimentation maison</option>
                             <option value="resto">Resto/Take away</option>
                             <option value="transport">Transport ponctuel</option>
@@ -630,7 +631,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 322€</strong></td>
+                                <td class="montant-display"><strong>2 421€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -659,8 +660,8 @@
                         <tbody>
                             <tr>
                                 <td><span class="categorie-label">Alimentation maison<span class="tooltip">Courses alimentaires + produits frais + épicerie + surgelés</span></span></td>
-                                <td class="montant-display">1 148€</td>
-                                <td><input type="number" class="montant-input" data-budget="1148" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td class="montant-display">1 049€</td>
+                                <td><input type="number" class="montant-input" data-budget="1049" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -683,8 +684,8 @@
                             </tr>
                             <tr>
                                 <td><span class="categorie-label">Consommation/Plaisir<span class="tooltip">Vêtements + Hygiène/Beauté + Cadeaux + Déco maison + Loisirs adultes</span></span></td>
-                                <td class="montant-display">400€</td>
-                                <td><input type="number" class="montant-input" data-budget="400" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">377€</td>
+                                <td><input type="number" class="montant-input" data-budget="377" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -707,7 +708,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES VARIABLES</strong></td>
-                                <td class="montant-display"><strong>2 278€</strong></td>
+                                <td class="montant-display"><strong>2 179€</strong></td>
                                 <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
@@ -777,8 +778,8 @@
             
             const mapping = {
                 'logement': 4, 'energie': 5, 'telephonie': 6, 'banque': 7, 'assurances': 8,
-                'scolaire': 9, 'sports': 10, 'sante': 11, 'transport-abo': 12, 'alimentation': 13,
-                'resto': 14, 'transport': 15, 'consommation': 16, 'vacances': 17, 'travaux': 18
+                'scolaire': 9, 'sports': 10, 'sante': 11, 'transport-abo': 12, 'abonnements-num': 13,
+                'alimentation': 14, 'resto': 15, 'transport': 16, 'consommation': 17, 'vacances': 18, 'travaux': 19
             };
             
             const inputIndex = mapping[categorie];
@@ -900,7 +901,8 @@
                             const categories = [
                                 "Salaire Marie", "Salaire Etienne", "CAF", "Autre",
                                 "Logement", "Énergie", "Téléphonie/Internet", 
-                                "Banque/Impôts", "Assurances", "Scolaire", "Sports/Loisirs", "Santé", "Transport abonnements",
+                                "Banque/Impôts", "Assurances", "Scolaire", "Sports/Loisirs", "Santé", 
+                                "Transport abonnements", "Abonnements numériques",
                                 "Alimentation", "Resto/Take away", "Transport ponctuel",
                                 "Consommation/Plaisir", "Provision vacances", "Provision travaux"
                             ];
@@ -1042,8 +1044,8 @@
             });
 
             updateTotal('total-revenus', 4600, totalRevenusRealise, 'revenus');
-            updateTotal('total-fixes', 2322, totalFixesRealise, 'charges');
-            updateTotal('total-variables', 2278, totalVariablesRealise, 'charges');
+            updateTotal('total-fixes', 2421, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 2179, totalVariablesRealise, 'charges');
             
             const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
             updateTotal('total-depenses', 4600, totalDepensesRealise, 'charges');

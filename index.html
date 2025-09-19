@@ -578,8 +578,8 @@
                             </tr>
                             <tr>
                                 <td>Santé courante</td>
-                                <td class="montant-display">80€</td>
-                                <td><input type="number" class="montant-input" data-budget="80" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">150€</td>
+                                <td><input type="number" class="montant-input" data-budget="150" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -594,7 +594,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 314€</strong></td>
+                                <td class="montant-display"><strong>2 384€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -623,8 +623,8 @@
                         <tbody>
                             <tr>
                                 <td>Alimentation maison</td>
-                                <td class="montant-display">1 156€</td>
-                                <td><input type="number" class="montant-input" data-budget="1156" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td class="montant-display">1 086€</td>
+                                <td><input type="number" class="montant-input" data-budget="1086" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -671,7 +671,7 @@
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES VARIABLES</strong></td>
-                                <td class="montant-display"><strong>2 286€</strong></td>
+                                <td class="montant-display"><strong>2 216€</strong></td>
                                 <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
@@ -1006,8 +1006,8 @@
             });
 
             updateTotal('total-revenus', 4600, totalRevenusRealise, 'revenus');
-            updateTotal('total-fixes', 2314, totalFixesRealise, 'charges');
-            updateTotal('total-variables', 2286, totalVariablesRealise, 'charges');
+            updateTotal('total-fixes', 2384, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 2216, totalVariablesRealise, 'charges');
             
             const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
             updateTotal('total-depenses', 4600, totalDepensesRealise, 'charges');

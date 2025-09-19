@@ -466,6 +466,7 @@
                             <option value="sante">Santé courante</option>
                             <option value="transport-abo">Transport abonnements</option>
                             <option value="abonnements-num">Abonnements numériques</option>
+                            <option value="argent-poche">Argent de poche enfants</option>
                             <option value="alimentation">Alimentation maison</option>
                             <option value="resto">Resto/Take away</option>
                             <option value="transport">Transport ponctuel</option>
@@ -566,7 +567,7 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Énergie</td>
+                                <td><span class="categorie-label">Énergie<span class="tooltip">Électricité + Gaz + Eau</span></span></td>
                                 <td class="montant-display">218€</td>
                                 <td><input type="number" class="montant-input" data-budget="218" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -574,15 +575,15 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Téléphonie/Internet</td>
-                                <td class="montant-display">160€</td>
-                                <td><input type="number" class="montant-input" data-budget="160" data-category="charges" onchange="calculer()"></td>
+                                <td><span class="categorie-label">Téléphonie/Internet<span class="tooltip">Fibre (26€) + Forfait Etienne (26€) + Forfait Marie (23€) + Forfait Emma (20€) + Forfait Diego (7€) + Hors forfait/marge (18€) = 120€</span></span></td>
+                                <td class="montant-display">120€</td>
+                                <td><input type="number" class="montant-input" data-budget="120" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Banque/Impôts</td>
+                                <td><span class="categorie-label">Banque/Impôts<span class="tooltip">Frais bancaires + Taxe foncière (165€/an) + autres impôts</span></span></td>
                                 <td class="montant-display">90€</td>
                                 <td><input type="number" class="montant-input" data-budget="90" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -590,7 +591,7 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Assurances</td>
+                                <td><span class="categorie-label">Assurances<span class="tooltip">Assurance habitation MAIF + responsabilité civile</span></span></td>
                                 <td class="montant-display">51€</td>
                                 <td><input type="number" class="montant-input" data-budget="51" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -598,7 +599,7 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Scolaire</td>
+                                <td><span class="categorie-label">Scolaire<span class="tooltip">Educapass + Cantine + Fournitures scolaires</span></span></td>
                                 <td class="montant-display">190€</td>
                                 <td><input type="number" class="montant-input" data-budget="190" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -606,7 +607,7 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Sports/Loisirs enfants</td>
+                                <td><span class="categorie-label">Sports/Loisirs enfants<span class="tooltip">Escalade + Scouts + UNSS + Activités sportives + Loisirs créatifs enfants</span></span></td>
                                 <td class="montant-display">260€</td>
                                 <td><input type="number" class="montant-input" data-budget="260" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -614,7 +615,7 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Santé courante</td>
+                                <td><span class="categorie-label">Santé courante<span class="tooltip">Médicaments non remboursés + Compléments alimentaires + Protéines Etienne + Dépassements honoraires</span></span></td>
                                 <td class="montant-display">150€</td>
                                 <td><input type="number" class="montant-input" data-budget="150" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
@@ -622,16 +623,32 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td>Transport abonnements</td>
-                                <td class="montant-display">40€</td>
-                                <td><input type="number" class="montant-input" data-budget="40" data-category="charges" onchange="calculer()"></td>
+                                <td><span class="categorie-label">Transport abonnements<span class="tooltip">Abonnement CITIZ (18€) + Bus Diego (10€) + Bus Emma (10€) = 38€</span></span></td>
+                                <td class="montant-display">38€</td>
+                                <td><input type="number" class="montant-input" data-budget="38" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td><span class="categorie-label">Abonnements numériques<span class="tooltip">Apple One (26€) + iCloud (30€) + HBO Max (19€) + YouTube (17€) + Prime (6€) + Yuka (1€) = 99€</span></span></td>
+                                <td class="montant-display">99€</td>
+                                <td><input type="number" class="montant-input" data-budget="99" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display ecart">0€</td>
+                                <td class="pourcentage">0%</td>
+                                <td class="indicateur">⚪</td>
+                            </tr>
+                            <tr>
+                                <td><span class="categorie-label">Argent de poche enfants<span class="tooltip">Billi (8€) + Diego (12€) + Emma (15€) = 35€</span></span></td>
+                                <td class="montant-display">35€</td>
+                                <td><input type="number" class="montant-input" data-budget="35" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES FIXES</strong></td>
-                                <td class="montant-display"><strong>2 421€</strong></td>
+                                <td class="montant-display"><strong>2 456€</strong></td>
                                 <td class="montant-display" id="total-fixes-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-fixes-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-fixes-pct"><strong>0%</strong></td>
@@ -660,8 +677,8 @@
                         <tbody>
                             <tr>
                                 <td><span class="categorie-label">Alimentation maison<span class="tooltip">Courses alimentaires + produits frais + épicerie + surgelés</span></span></td>
-                                <td class="montant-display">1 049€</td>
-                                <td><input type="number" class="montant-input" data-budget="1049" data-category="charges" data-critical="true" onchange="calculer()"></td>
+                                <td class="montant-display">929€</td>
+                                <td><input type="number" class="montant-input" data-budget="929" data-category="charges" data-critical="true" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -675,17 +692,17 @@
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
-                                <td><span class="categorie-label">Transport ponctuel<span class="tooltip">Essence + CITIZ + SNCF + Péages + Parking</span></span></td>
-                                <td class="montant-display">150€</td>
-                                <td><input type="number" class="montant-input" data-budget="150" data-category="charges" onchange="calculer()"></td>
+                                <td><span class="categorie-label">Transport ponctuel<span class="tooltip">Utilisation CITIZ (pas de voiture) + Billets trains + Yego + Billets tram + Essence/autoroute (occasionnel) + Entretien vélos</span></span></td>
+                                <td class="montant-display">295€</td>
+                                <td><input type="number" class="montant-input" data-budget="295" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr>
                                 <td><span class="categorie-label">Consommation/Plaisir<span class="tooltip">Vêtements + Hygiène/Beauté + Cadeaux + Déco maison + Loisirs adultes</span></span></td>
-                                <td class="montant-display">377€</td>
-                                <td><input type="number" class="montant-input" data-budget="377" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">292€</td>
+                                <td><input type="number" class="montant-input" data-budget="292" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
@@ -700,15 +717,15 @@
                             </tr>
                             <tr>
                                 <td><span class="categorie-label">Provision travaux/imprevus<span class="tooltip">Épargne pour travaux maison + réparations + urgences</span></span></td>
-                                <td class="montant-display">160€</td>
-                                <td><input type="number" class="montant-input" data-budget="160" data-category="charges" onchange="calculer()"></td>
+                                <td class="montant-display">100€</td>
+                                <td><input type="number" class="montant-input" data-budget="100" data-category="charges" onchange="calculer()"></td>
                                 <td class="montant-display ecart">0€</td>
                                 <td class="pourcentage">0%</td>
                                 <td class="indicateur">⚪</td>
                             </tr>
                             <tr class="total-row">
                                 <td><strong>TOTAL CHARGES VARIABLES</strong></td>
-                                <td class="montant-display"><strong>2 179€</strong></td>
+                                <td class="montant-display"><strong>2 144€</strong></td>
                                 <td class="montant-display" id="total-variables-realise"><strong>0€</strong></td>
                                 <td class="montant-display" id="total-variables-ecart"><strong>0€</strong></td>
                                 <td class="pourcentage" id="total-variables-pct"><strong>0%</strong></td>
@@ -779,7 +796,8 @@
             const mapping = {
                 'logement': 4, 'energie': 5, 'telephonie': 6, 'banque': 7, 'assurances': 8,
                 'scolaire': 9, 'sports': 10, 'sante': 11, 'transport-abo': 12, 'abonnements-num': 13,
-                'alimentation': 14, 'resto': 15, 'transport': 16, 'consommation': 17, 'vacances': 18, 'travaux': 19
+                'argent-poche': 14, 'alimentation': 15, 'resto': 16, 'transport': 17, 
+                'consommation': 18, 'vacances': 19, 'travaux': 20
             };
             
             const inputIndex = mapping[categorie];
@@ -902,7 +920,7 @@
                                 "Salaire Marie", "Salaire Etienne", "CAF", "Autre",
                                 "Logement", "Énergie", "Téléphonie/Internet", 
                                 "Banque/Impôts", "Assurances", "Scolaire", "Sports/Loisirs", "Santé", 
-                                "Transport abonnements", "Abonnements numériques",
+                                "Transport abonnements", "Abonnements numériques", "Argent de poche",
                                 "Alimentation", "Resto/Take away", "Transport ponctuel",
                                 "Consommation/Plaisir", "Provision vacances", "Provision travaux"
                             ];
@@ -1044,8 +1062,8 @@
             });
 
             updateTotal('total-revenus', 4600, totalRevenusRealise, 'revenus');
-            updateTotal('total-fixes', 2421, totalFixesRealise, 'charges');
-            updateTotal('total-variables', 2179, totalVariablesRealise, 'charges');
+            updateTotal('total-fixes', 2456, totalFixesRealise, 'charges');
+            updateTotal('total-variables', 2144, totalVariablesRealise, 'charges');
             
             const totalDepensesRealise = totalFixesRealise + totalVariablesRealise;
             updateTotal('total-depenses', 4600, totalDepensesRealise, 'charges');
